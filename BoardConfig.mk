@@ -95,9 +95,9 @@ BOARD_SUPPRESS_SECURE_ERASE := true
 BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
 
 # Workaround for copying error vendor files to recovery ramdisk
-#TARGET_COPY_OUT_PRODUCT := product
+TARGET_COPY_OUT_PRODUCT := product
 TARGET_COPY_OUT_VENDOR := vendor
-#TARGET_COPY_OUT_SYSTEM_EXT = system_ext
+TARGET_COPY_OUT_SYSTEM_EXT = system_ext
 
 # Crypto
 TW_INCLUDE_CRYPTO := true
