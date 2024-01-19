@@ -105,3 +105,7 @@ PRODUCT_PACKAGES += \
     mtk_plpath_utils.recovery
 TARGET_RECOVERY_DEVICE_MODULES += \
     android.hardware.keymaster@4.1
+PRODUCT_PACKAGES += \
+    android.hardware.security.keymint \
+    android.hardware.security.secureclock \
+    android.hardware.security.sharedsecret
