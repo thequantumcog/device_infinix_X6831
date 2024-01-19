@@ -1,9 +1,24 @@
-#<src>                                                  <mnt_point>           <type>              <mnt_flags and options>                      <fs_mgr_flags
-system                                                  /system               ext4                rw                                           wait,slotselect,logical
-system_ext                                              /system_ext           ext4                rw                                           wait,slotselect,logical
-vendor                                                  /vendor               ext4                rw                                           wait,slotselect,logical
-product                                                 /product              ext4                rw                                           wait,slotselect,logical
+# Android fstab file.
+# The filesystem that contains the filesystem checker binary (typically /system) cannot
+# specify MF_CHECK, and must come before any filesystems that do specify MF_CHECK
 
-/dev/block/platform/bootdevice/by-name/md_udc           /metadata	      ext4	          noatime,nosuid,nodev,discard                 wait,check,formattable
-/dev/block/platform/bootdevice/by-name/userdata         /data                 f2fs                noatime,nosuid,nodev,discard,noflush_merge,reserve_root=134217,resgid=1065,inlinecrypt,tran_gc wait,check,formattable,quota,resize,fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized,keydirectory=/metadata/vold/metadata_encryption
-/dev/block/platform/bootdevice/by-name/misc             /misc                 emmc                defaults                                     defaults
+#<src>				<mnt_point>		<type>		<mnt_flags and options>															<fs_mgr_flags>
+# Logical partitions
+system				/system			ext4		ro																	wait,slotselect,logical
+system				/system			ext4		ro																	wait,slotselect,logical
+vendor				/vendor			ext4		ro																	wait,slotselect,logical
+product				/product		ext4		ro																	wait,slotselect,logical
+system_ext			/system_ext		ext4		ro																	wait,slotselect,logical
+
+
+# Userdata partition
+/dev/block/by-name/metadata	/metadata		ext4		noatime,nosuid,nodev,discard														wait,check,formattable
+/dev/block/by-name/userdata	/data			f2fs		noatime,nosuid,nodev,discard,noflush_merge,fsync_mode=nobarrier,reserve_root=134217,resgid=1065,inlinecrypt				wait,check,formattable,fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized,keydirectory=/metadata/vold/metadata_encryption
+
+# Need to have this entry in here even though the mount point itself is no longer needed.
+# The update_engine code looks for this entry in order to determine the boot device address
+# and fails if it does not find it.
+/dev/block/by-name/misc		/misc			emmc		defaults																defaults
+
+# Use tranfs as cache
+/dev/block/by-name/tranfs	/cache			ext4		noatime,nosuid,nodev,discard														wait,check,formattable

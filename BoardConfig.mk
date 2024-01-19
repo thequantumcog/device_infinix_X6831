@@ -56,7 +56,7 @@ BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOTIMG_HEADER_VERSION)
-BOARD_KERNEL_IMAGE_NAME := Image.gz
+BOARD_KERNEL_IMAGE_NAME := Image
 
 # AVB
 BOARD_AVB_ENABLE := true
@@ -106,11 +106,11 @@ BOARD_USES_METADATA_PARTITION := true
 TW_INCLUDE_FBE_METADATA_DECRYPT := true
 
 # Recovery modules
-TARGET_RECOVERY_DEVICE_MODULES += \
+#TARGET_RECOVERY_DEVICE_MODULES += \
     libkeymaster4 \
     libpuresoftkeymasterdevice
 
-RECOVERY_LIBRARY_SOURCE_FILES += \
+#RECOVERY_LIBRARY_SOURCE_FILES += \
     $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster4.so \
     $(TARGET_OUT_SHARED_LIBRARIES)/libpuresoftkeymasterdevice.so
 
@@ -133,6 +133,8 @@ TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 # Hardware
 BOARD_USES_MTK_HARDWARE := true
 
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
+
 ## TWRP-Specific configuration
 TW_THEME := portrait_hdpi
 TW_DEVICE_VERSION := ${shell git -C $(DEVICE_PATH) rev-parse --short HEAD}-ardrag0n
@@ -154,6 +156,7 @@ TW_INCLUDE_RESETPROP := true
 TW_INCLUDE_REPACKTOOLS := true
 TW_FRAMERATE := 60
 TW_HAS_MTP := true
+TW_NO_FLASH_CURRENT_TWRP := true
 TW_DEFAULT_LANGUAGE := en
 TW_OVERRIDE_SYSTEM_PROPS := \
     "ro.build.date.utc;ro.bootimage.build.date.utc=ro.build.date.utc;ro.odm.build.date.utc=ro.build.date.utc;ro.product.build.date.utc=ro.build.date.utc;ro.system.build.date.utc=ro.build.date.utc;ro.system_ext.build.date.utc=ro.build.date.utc;ro.vendor.build.date.utc=ro.build.date.utc;ro.build.product;ro.build.fingerprint=ro.system.build.fingerprint;ro.build.version.incremental;ro.product.device=ro.product.system.device;ro.product.model=ro.product.system.model;ro.product.name=ro.product.system.name"
