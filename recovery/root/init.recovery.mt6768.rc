@@ -1,121 +1,166 @@
-import /init.tee.rc
-import /init.custom.rc
+import /tee.rc
+import /trustonic.rc
 
 on init
-    setprop sys.usb.configfs 1
-    setprop sys.usb.controller "musb-hdrc"
-    setprop sys.usb.ffs.aio_compat 0
-    export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/vendor/lib64/hw
-    setprop crypto.ready 1
-
-on fs && property:ro.debuggable=0
-    write /sys/class/udc/musb-hdrc/device/cmode 2
-    start adbd
+    export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/vendor/lib64/hw:/system/lib64/hw
+    
+    mkdir /mnt/vendor/persist 0700 root root
+    mount ext4 /dev/block/by-name/persist /mnt/vendor/persist rw
 
 on fs
+    #on property:ro.crypto.state=encrypted && property:ro.crypto.type=file
     install_keyring
-    
-# We need vold early for metadata encryption
-on early-fs
-    start vold
-
-on late-fs
-    # Mount RW partitions which need run fsck
-    mount_all /first_stage_ramdisk/fstab.mt6768 --late
-
-on post-fs
-    start boot-hal-1-2
-
-    symlink /dev/block/mapper/pl_a /dev/block/by-name/preloader_raw_a
-    symlink /dev/block/mapper/pl_b /dev/block/by-name/preloader_raw_b
-
-on boot
-    start mtk.plpath.utils.link
-
-on property:persist.vendor.mtk.pl_lnk=1
-    symlink /dev/block/mapper/pl_a /dev/block/by-name/preloader_raw_a
-    symlink /dev/block/mapper/pl_b /dev/block/by-name/preloader_raw_b
-    symlink /dev/block/mapper/pl_a /dev/block/platform/bootdevice/by-name/preloader_raw_a
-    symlink /dev/block/mapper/pl_b /dev/block/platform/bootdevice/by-name/preloader_raw_b
-
-# FSTAB_RAW2(lk2,bootloader2) of fstab.in.emmc, but without bootloader2 mount point
-    symlink /dev/block/by-name/lk1 /dev/block/by-name/bootloader1
-    symlink /dev/block/by-name/lk2 /dev/block/by-name/bootloader2
-
-# Fix ro.vendor.mtk_ufs_support remove issue of recovery mode
-on property:vendor.mtk.boot0_linka=1
-    symlink /dev/block/sda /dev/block/mmcblk0boot0
-
-on property:vendor.mtk.boot0_linkb=1
-    symlink /dev/block/sdb /dev/block/mmcblk0boot0
-
-on property:vendor.mtk.boot0_linkc=1
-    symlink /dev/block/sdc /dev/block/mmcblk0boot0
-
-on property:vendor.mtk.boot1_linka=1
-    symlink /dev/block/sda /dev/block/mmcblk0boot1
-
-on property:vendor.mtk.boot1_linkb=1
-    symlink /dev/block/sdb /dev/block/mmcblk0boot1
-
-on property:vendor.mtk.boot1_linkc=1
-    symlink /dev/block/sdc /dev/block/mmcblk0boot1
-
-service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
-    class main
-    user root
-    group root system
-    oneshot
-    disabled
-    seclabel u:r:recovery:s0
 
 service vendor.gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
     interface android.hardware.gatekeeper@1.0::IGatekeeper default
+    class hal
     user root
     group root
     disabled
     seclabel u:r:recovery:s0
 
-service vendor.keymint-trustonic /vendor/bin/hw/android.hardware.security.keymint-service.trustonic
-    class early_hal
+service keymaster-4-1 /system/bin/android.hardware.keymaster@4.1-service.trustonic
     interface android.hardware.keymaster@4.0::IKeymasterDevice default
     interface android.hardware.keymaster@4.1::IKeymasterDevice default
-    user nobody
+    user root
+    group root drmrpc
+    disabled
+    seclabel u:r:recovery:s0
+    
+service keymaster_attestation-1-1 /system/bin/vendor.mediatek.hardware.keymaster_attestation@1.1-service
+    #interface vendor.mediatek.hardware.keymaster_attestation@1.0::IKeymasterDevice default
+    #interface vendor.mediatek.hardware.keymaster_attestation@1.1::IKeymasterDevice default
+    user root
+    group root
+    disabled
     seclabel u:r:recovery:s0
 
-on property:crypto.ready=1
-    start vendor.keymint-trustonic
-
 on property:hwservicemanager.ready=true
+    start keystore2
     start mobicore
-    start vendor.gatekeeper-1-0
-    start vendor.keymint-trustonic
+    start keymaster-4-1
+    start gatekeeper-1-0
+    start keymaster_attestation-1-1
 
+#on property:vendor.sys.listener.registered=true
+    #start gatekeeper-1-0
+    #start keymaster-4-1
+    
 on property:ro.crypto.state=unsupported
     stop mobicore
-    stop vendor.gatekeeper-1-0
-    stop vendor.keymint-trustonic
-
+    stop keymaster-4-1
+    stop gatekeeper-1-0
+    stop servicemanager
+    stop hwservicemanager
+    
 on property:ro.crypto.state=unencrypted
     stop mobicore
-    stop vendor.gatekeeper-1-0
-    stop vendor.keymint-trustonic
-
+    stop keymaster-4-1
+    stop gatekeeper-1-0
+    stop servicemanager
+    stop hwservicemanager
+        
 on property:twrp.decrypt.done=true
     stop mobicore
-    stop vendor.gatekeeper-1-0
-    stop vendor.keymint-trustonic
-
-on property:crypto.ready=0
-    stop mobicore
-    stop vendor.gatekeeper-1-0
-    stop vendor.keymint-trustonic
-
-on post-fs-data
-    mkdir /data/vendor_de 0770 system system
-    mkdir /data/vendor_de/0 0770 system system
-    mkdir /data/vendor_de/0/cryptoeng 0770 system system
-
+    stop keymaster-4-1
+    stop gatekeeper-1-0
+    stop servicemanager
+    stop hwservicemanager
+   
+on boot
     start health-hal-2-1
-    setprop sys.usb.config adb
 
+# Start Daemon (Registry directories should already be present)
+service mobicore /system/bin/mcDriverDaemon --P1 /mnt/vendor/persist/mcRegistry \
+        -r /vendor/app/mcRegistry/06090000000000000000000000000000.drbin \
+        -r /vendor/app/mcRegistry/020f0000000000000000000000000000.drbin \
+        -r /vendor/app/mcRegistry/05120000000000000000000000000000.drbin \
+        -r /vendor/app/mcRegistry/020b0000000000000000000000000000.drbin \
+        -r /vendor/app/mcRegistry/030b0000000000000000000000000000.drbin \
+        -r /vendor/app/mcRegistry/03100000000000000000000000000000.drbin \
+        -r /vendor/app/mcRegistry/40188311faf343488db888ad39496f9a.drbin \
+        -r /vendor/app/mcRegistry/070c0000000000000000000000000000.drbin \
+        -r /vendor/app/mcRegistry/090b0000000000000000000000000000.drbin \
+        -r /vendor/app/mcRegistry/0f5eed3c3b5a47afacca69a84bf0efad.drbin \
+        -r /vendor/app/mcRegistry/07060000000000000000000000007169.drbin \
+        -r /vendor/app/mcRegistry/4be4f7dc1f2c11e5b5f7727283247c7f.drbin \
+        -r /vendor/app/mcRegistry/08070000000000000000000000008270.drbin \
+        -r /vendor/app/mcRegistry/09080000000000000000000000009381.drbin \
+        -r /vendor/app/mcRegistry/07070000000000000000000000000000.drbin \
+        -r /vendor/app/mcRegistry/07407000000000000000000000000000.drbin \
+        -r /vendor/app/mcRegistry/9073f03a9618383bb1856eb3f990babd.drbin \
+        -r /vendor/app/mcRegistry/5020170115e016302017012521300000.drbin \
+        -r /vendor/app/mcRegistry/05160000000000000000000000000000.drbin \
+        -r /vendor/app/mcRegistry/05070000000000000000000000000000.drbin \
+        -r /vendor/app/mcRegistry/032c0000000000000000000000000000.drbin \
+        -r /vendor/app/mcRegistry/033c0000000000000000000000000000.drbin \
+        -r /vendor/app/mcRegistry/034c0000000000000000000000000000.drbin \
+        -r /vendor/app/mcRegistry/07150000000000000000000000000000.tlbin     
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
+
+service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
+    class main
+    user root
+    group root system
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
+
+service keystore_auth /system/bin/keystore_auth
+    oneshot
+    user system
+    group root
+    disabled
+    seclabel u:r:recovery:s0
+
+service keystore /system/bin/keystore /tmp/misc/keystore
+    user root
+    group root drmrpc readproc log
+    disabled
+    seclabel u:r:recovery:s0    
+
+# We need vold early for metadata encryption
+on early-fs
+    start vold
+
+    # Mount RW partitions which need run fsck
+    mount_all /first_stage_ramdisk/fstab.mt6768 --late
+
+on init
+    setprop sys.usb.configfs 1
+    setprop sys.usb.controller "musb-hdrc"
+    setprop sys.usb.ffs.aio_compat 1
+
+on fs && property:ro.debuggable=0
+    # distinguish USB shoulde connect or not, i.e. CDP vs SDP
+    write /sys/class/udc/musb-hdrc/device/cmode 2
+    # set charging free due to it wait for USB activation
+    start adbd
+
+on post-fs
+    start boot-hal-1-2
+    start mtk.plpath.utils.link
+
+    # Support A/B feature for EMMC and UFS boot region
+    wait /dev/block/mmcblk0boot0 2
+    symlink /dev/block/sda /dev/block/mmcblk0boot0
+    symlink /dev/block/sdb /dev/block/mmcblk0boot1
+    symlink /dev/block/mmcblk0boot0 /dev/block/by-name/preloader_a
+    symlink /dev/block/mmcblk0boot1 /dev/block/by-name/preloader_b
+
+    # Support A/B feature for combo emmc and ufs OTA update
+    symlink /dev/block/by-name/preloader_a /dev/block/by-name/preloader_emmc_a
+    symlink /dev/block/by-name/preloader_b /dev/block/by-name/preloader_emmc_b
+    symlink /dev/block/by-name/preloader_a /dev/block/by-name/preloader_ufs_a
+    symlink /dev/block/by-name/preloader_b /dev/block/by-name/preloader_ufs_b
+
+    # Create a more standard /dev/block layout for our scripts
+    symlink /dev/block/platform/bootdevice /dev/block/bootdevice
+
+    exec u:r:update_engine:s0 root root -- /system/bin/mtk_plpath_utils
+
+    symlink /dev/block/mapper/pl_a /dev/block/by-name/preloader_raw_a
+    symlink /dev/block/mapper/pl_b /dev/block/by-name/preloader_raw_b
