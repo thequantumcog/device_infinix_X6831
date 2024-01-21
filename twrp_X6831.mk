@@ -24,3 +24,5 @@ PRODUCT_NAME := twrp_X6831
 PRODUCT_BRAND := Infinix
 PRODUCT_MODEL := Infinix HOT 30
 PRODUCT_MANUFACTURER := infinix
+
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,$(LOCAL_PATH)/recovery/root,recovery/root)
