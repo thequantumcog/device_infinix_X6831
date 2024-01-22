@@ -11,7 +11,7 @@ on fs
     #on property:ro.crypto.state=encrypted && property:ro.crypto.type=file
     install_keyring
 
-service vendor.gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
+service vendor.gatekeeper-1-0 /system/bin/hw/android.hardware.gatekeeper@1.0-service
     interface android.hardware.gatekeeper@1.0::IGatekeeper default
     class hal
     user root

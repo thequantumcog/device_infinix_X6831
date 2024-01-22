@@ -1,48 +1,25 @@
-/system                   ext4     system                               flags=display=system;logical;slotselect
-/vendor                   ext4     vendor                               flags=display=vendor;logical;slotselect
-/product                  ext4     product                              flags=display=product;logical;slotselect
-/system_ext               ext4     system_ext                           flags=display=system_ext;logical;slotselect
-/metadata                 ext4     /dev/block/by-name/md_udc            flags=display=metadata
-/data                     f2fs     /dev/block/by-name/userdata          flags=display=data
-/tranfs                   ext4     /dev/block/by-name/tranfs            flags=display=tranfs
-/mnt/vendor/protect_f     ext4     /dev/block/by-name/protect1          flags=display=protect_f
-/mnt/vendor/protect_s     ext4     /dev/block/by-name/protect2          flags=display=protect_s
-/mnt/vendor/nvdata        ext4     /dev/block/by-name/nvdata            flags=display=nvdata
-/mnt/vendor/nvcfg         ext4     /dev/block/by-name/nvcfg             flags=display=nvcfg
-/mnt/vendor/persist       ext4     /dev/block/by-name/persist           flags=display=persist
-auto                      auto     /devices/platform/externdevice*      flags=display=auto
-auto                      vfat     /devices/platform/mt_usb*            flags=display=auto
-/persistent               emmc     /dev/block/by-name/frp               flags=display=persistent
-/nvram                    emmc     /dev/block/by-name/nvram             flags=display=nvram
-/proinfo                  emmc     /dev/block/by-name/proinfo           flags=display=proinfo
-/bootloader               emmc     /dev/block/by-name/lk                flags=display=bootloader
-/bootloader2              emmc     /dev/block/by-name/lk2               flags=display=bootloader2
-/misc                     emmc     /dev/block/by-name/misc              flags=display=misc
-/para                     emmc     /dev/block/by-name/para              flags=display=para
-/vendor_boot              emmc     /dev/block/by-name/vendor_boot       flags=display=vendor_boot
-/boot                     emmc     /dev/block/by-name/boot              flags=display=boot;slotselect
-/vbmeta_vendor            emmc     /dev/block/by-name/vbmeta_vendor     flags=display=vbmeta_vendor;slotselect
-/vbmeta_system            emmc     /dev/block/by-name/vbmeta_system     flags=display=vbmeta_system;slotselect
-/logo                     emmc     /dev/block/by-name/logo              flags=display=logo
-/expdb                    emmc     /dev/block/by-name/expdb             flags=display=expdb
-/seccfg                   emmc     /dev/block/by-name/seccfg            flags=display=seccfg
-/tee1                     emmc     /dev/block/by-name/tee1              flags=display=tee1
-/tee2                     emmc     /dev/block/by-name/tee2              flags=display=tee2
-/scp1                     emmc     /dev/block/by-name/scp1              flags=display=scp1
-/scp2                     emmc     /dev/block/by-name/scp2              flags=display=scp2
-/sspm_1                   emmc     /dev/block/by-name/sspm_1            flags=display=sspm_1
-/sspm_2                   emmc     /dev/block/by-name/sspm_2            flags=display=sspm_2
-/md1img                   emmc     /dev/block/by-name/md1img            flags=display=md1img
-/md1dsp                   emmc     /dev/block/by-name/md1dsp            flags=display=md1dsp
-/gz1                      emmc     /dev/block/by-name/gz1               flags=display=gz1
-/gz2                      emmc     /dev/block/by-name/gz2               flags=display=gz2
-/spmfw                    emmc     /dev/block/by-name/spmfw             flags=display=spmfw
-/boot_para                emmc     /dev/block/by-name/boot_para         flags=display=boot_para
-/dtbo                     emmc     /dev/block/by-name/dtbo              flags=display=dtbo
-/otp                      emmc     /dev/block/by-name/otp               flags=display=otp
-/vbmeta                   emmc     /dev/block/by-name/vbmeta            flags=display=vbmeta
-/tkv                      emmc     /dev/block/by-name/tkv               flags=display=tkv
-# Removable storage
-/external_sd vfat /dev/block/mmcblk1p1 /dev/block/mmcblk1 flags=storage;wipeingui;removable
-/usb-otg auto /dev/block/sda1 /dev/block/sda flags=display="USB-OTG";storage;wipeingui;removable
+# Android fstab file.
+# The filesystem that contains the filesystem checker binary (typically /system) cannot
+# specify MF_CHECK, and must come before any filesystems that do specify MF_CHECK
+
+#<src>				<mnt_point>		<type>		<mnt_flags and options>															<fs_mgr_flags>
+# Logical partitions
+system				/system			ext4		ro																	wait,slotselect,logical
+vendor				/vendor			ext4		ro																	wait,slotselect,logical
+product				/product		ext4		ro																	wait,slotselect,logical
+system_ext			/system_ext		ext4		ro																	wait,slotselect,logical
+
+
+# Userdata partition
+/dev/block/by-name/metadata	/metadata		ext4		noatime,nosuid,nodev,discard														wait,check,formattable
+/dev/block/by-name/userdata	/data			f2fs		noatime,nosuid,nodev,discard,noflush_merge,fsync_mode=nobarrier,reserve_root=134217,resgid=1065,inlinecrypt				wait,check,formattable,fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized,keydirectory=/metadata/vold/metadata_encryption
+
+# Need to have this entry in here even though the mount point itself is no longer needed.
+# The update_engine code looks for this entry in order to determine the boot device address
+# and fails if it does not find it.
+/dev/block/by-name/misc		/misc			emmc		defaults																defaults
+
+# Use tranfs as cache
+#/dev/block/by-name/tranfs	/cache			ext4		noatime,nosuid,nodev,discard														wait,check,formattable
+/dev/block/by-name/boot /boot emmc defaults first_stage_mount,nofail,slotselect
 
