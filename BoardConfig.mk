@@ -143,6 +143,8 @@ TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
 ## TWRP-Specific configuration
 TW_THEME := portrait_hdpi
 TW_DEVICE_VERSION := ${shell git -C $(DEVICE_PATH) rev-parse --short HEAD}-ardrag0n
+TW_CUSTOM_CLOCK_POS := 40
+TW_CUSTOM_CPU_POS := 290
 RECOVERY_SDCARD_ON_DATA := true
 TARGET_USES_MKE2FS := true
 TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
