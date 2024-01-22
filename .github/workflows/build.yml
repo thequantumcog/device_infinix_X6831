@@ -14,11 +14,11 @@ on:
       DEVICE_TREE_URL:
         description: 'DEVICE_TREE_URL'
         required: true
-        default: 'https://github.com/ardrag0n/Infinix-X6831'
+        default: 'https://github.com/ardrag0n/device_infinix_X6831'
       DEVICE_TREE_BRANCH:
         description: 'DEVICE_TREE_BRANCH'
         required: true
-        default: 'master'
+        default: '12.1'
       DEVICE_PATH:
         description: 'DEVICE_PATH'
         required: true
