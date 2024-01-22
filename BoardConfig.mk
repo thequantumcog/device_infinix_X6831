@@ -119,8 +119,6 @@ TW_INCLUDE_CRYPTO_FBE := true
 TW_INCLUDE_FBE_METADATA_DECRYPT := true
 BOARD_ROOT_EXTRA_FOLDERS += metadata
 
-
-
 # Properties
 TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
 
@@ -141,9 +139,6 @@ TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 BOARD_USES_MTK_HARDWARE := true
 
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
-# Copy fstab to ensure the first stage boot mounts everything we need.
-
-
 
 ## TWRP-Specific configuration
 TW_THEME := portrait_hdpi
@@ -153,8 +148,6 @@ TARGET_USES_MKE2FS := true
 TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TW_DEFAULT_BRIGHTNESS := 1200
 TW_MAX_BRIGHTNESS := 2047
-#TW_Y_OFFSET := 100
-#TW_H_OFFSET := -100
 TW_EXCLUDE_DEFAULT_USB_INIT := true
 TW_EXCLUDE_BASH := true
 TW_EXCLUDE_NANO := true
