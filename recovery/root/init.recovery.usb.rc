@@ -54,7 +54,11 @@ on boot
     chmod a+x config/usb_gadget/g1/strings/0x409
     chmod 0666 /config/usb_gadget/g1/strings/0x409/product
     #SDD: add multi device name by lijia.chen 2020.08.10 end
-
+     #SDD:add OTG feature for TESSCR-6368 by weike.xu 20210512 start
+    chmod 0666 /sys/devices/platform/odm/odm:tran_battery/OTG_CTL
+    write /sys/devices/platform/odm/odm:tran_battery/OTG_CTL "1"
+    #SDD:add OTG feature for TESSCR-6368 by weike.xu 20210512 end
+    
     # for usb otg sdcard hot plug detection
     write /sys/module/block/parameters/events_dfl_poll_msecs 1000
 
