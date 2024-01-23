@@ -98,14 +98,14 @@ PRODUCT_EXTRA_RECOVERY_KEYS += \
 #    mtk_plpath_utils.recovery
 
 # Recovery modules
-TARGET_RECOVERY_DEVICE_MODULES += \
+#TARGET_RECOVERY_DEVICE_MODULES += \
     libresetprop \
     libkeymaster4 \
     libkeymaster41 \
     libtrustonic_keybox_ca \
     libimsg_log
 
-RECOVERY_LIBRARY_SOURCE_FILES += \
+#RECOVERY_LIBRARY_SOURCE_FILES += \
     $(TARGET_OUT_SHARED_LIBRARIES)/libresetprop.so \
     $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster4.so \
     $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster41.so \
