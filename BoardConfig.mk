@@ -165,8 +165,6 @@ TW_HAS_MTP := true
 TW_NO_FLASH_CURRENT_TWRP := true
 TW_EXTRA_LANGUAGES := false
 TW_DEFAULT_LANGUAGE := en
-TW_OVERRIDE_SYSTEM_PROPS := \
-    "ro.build.date.utc;ro.bootimage.build.date.utc=ro.build.date.utc;ro.odm.build.date.utc=ro.build.date.utc;ro.product.build.date.utc=ro.build.date.utc;ro.system.build.date.utc=ro.build.date.utc;ro.system_ext.build.date.utc=ro.build.date.utc;ro.vendor.build.date.utc=ro.build.date.utc;ro.build.product;ro.build.fingerprint=ro.system.build.fingerprint;ro.build.version.incremental;ro.product.device=ro.product.system.device;ro.product.model=ro.product.system.model;ro.product.name=ro.product.system.name"
 
 # Debug
 #TWRP_INCLUDE_LOGCAT := true
