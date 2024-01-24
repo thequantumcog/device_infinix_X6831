@@ -44,7 +44,7 @@ AB_OTA_UPDATER := true
 
 # Kernel
 BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2
-#BOARD_KERNEL_CMDLINE += androidboot.force_normal_boot=1
+BOARD_KERNEL_CMDLINE += twrpfastboot=0
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
 TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
 BOARD_BOOTIMG_HEADER_VERSION := 2
