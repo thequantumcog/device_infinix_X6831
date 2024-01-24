@@ -44,7 +44,7 @@ AB_OTA_UPDATER := true
 
 # Kernel
 BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2
-#BOARD_KERNEL_CMDLINE += androidboot.force_normal_boot=1
+BOARD_KERNEL_CMDLINE += twrpfastboot=0
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
 TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
 BOARD_BOOTIMG_HEADER_VERSION := 2
@@ -151,7 +151,7 @@ TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TW_DEFAULT_BRIGHTNESS := 1200
 TW_MAX_BRIGHTNESS := 2047
 TW_EXCLUDE_DEFAULT_USB_INIT := true
-TW_EXCLUDE_BASH := true
+#TW_EXCLUDE_BASH := true
 TW_EXCLUDE_NANO := true
 TW_EXCLUDE_TWRPAPP := true
 TW_EXCLUDE_SUPERSU := true
@@ -163,9 +163,7 @@ TW_INCLUDE_RESETPROP := true
 TW_FRAMERATE := 60
 TW_HAS_MTP := true
 #TW_NO_FLASH_CURRENT_TWRP := true
-TW_EXTRA_LANGUAGES := false
-TW_DEFAULT_LANGUAGE := en
-TW_OVERRIDE_SYSTEM_PROPS := \
+#TW_OVERRIDE_SYSTEM_PROPS := \
     "ro.build.date.utc;ro.bootimage.build.date.utc=ro.build.date.utc;ro.odm.build.date.utc=ro.build.date.utc;ro.product.build.date.utc=ro.build.date.utc;ro.system.build.date.utc=ro.build.date.utc;ro.system_ext.build.date.utc=ro.build.date.utc;ro.vendor.build.date.utc=ro.build.date.utc;ro.build.product;ro.build.fingerprint=ro.system.build.fingerprint;ro.build.version.incremental;ro.product.device=ro.product.system.device;ro.product.model=ro.product.system.model;ro.product.name=ro.product.system.name"
 
 # Debug
