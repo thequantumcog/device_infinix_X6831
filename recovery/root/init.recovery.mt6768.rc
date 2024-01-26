@@ -3,8 +3,12 @@ import /trustonic.rc
 
 on init
     export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/vendor/lib64/hw:/system/lib64/hw 
+<<<<<<< HEAD
     mkdir /mnt/vendor/persist 0700 root root
     mount ext4 /dev/block/by-name/persist /mnt/vendor/persist rw
+=======
+    
+>>>>>>> bac8990 (Optimize)
 
 on fs
     install_keyring
@@ -34,7 +38,7 @@ service keymaster_attestation-1-1 /system/bin/vendor.mediatek.hardware.keymaster
     seclabel u:r:recovery:s0
 
 on property:hwservicemanager.ready=true
-    start keystore2
+    #start keystore2 (test without it)
     start mobicore
     start keymaster-4-1
     start gatekeeper-1-0
@@ -44,16 +48,19 @@ on property:ro.crypto.state=unsupported
     stop mobicore
     stop keymaster-4-1
     stop gatekeeper-1-0
+    stop keymaster_attestation-1-1
     
 on property:ro.crypto.state=unencrypted
     stop mobicore
     stop keymaster-4-1
     stop gatekeeper-1-0
+    stop keymaster_attestation-1-1
         
 on property:twrp.decrypt.done=true
     stop mobicore
     stop keymaster-4-1
     stop gatekeeper-1-0
+    stop keymaster_attestation-1-1
    
 service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
     class main
@@ -63,25 +70,25 @@ service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
     oneshot
     seclabel u:r:recovery:s0
 
-service keystore_auth /system/bin/keystore_auth
-    oneshot
-    user system
-    group root
-    disabled
-    seclabel u:r:recovery:s0
+#service keystore_auth /system/bin/keystore_auth
+#    oneshot
+#    user system
+#    group root
+#    disabled
+#    seclabel u:r:recovery:s0
 
-service keystore /system/bin/keystore /tmp/misc/keystore
-    user root
-    group root drmrpc readproc log
-    disabled
-    seclabel u:r:recovery:s0    
+#service keystore /system/bin/keystore /tmp/misc/keystore
+#    user root
+#    group root drmrpc readproc log
+#    disabled
+#    seclabel u:r:recovery:s0    
 
 # We need vold early for metadata encryption
-on early-fs
-    start vold
+#on early-fs
+#    start vold
 
     # Mount RW partitions which need run fsck
-    mount_all /first_stage_ramdisk/fstab.mt6768 --late
+#    mount_all /first_stage_ramdisk/fstab.mt6768 --late
 
 on init
     setprop sys.usb.configfs 1
