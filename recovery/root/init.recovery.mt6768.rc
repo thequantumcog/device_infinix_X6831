@@ -3,12 +3,6 @@ import /trustonic.rc
 
 on init
     export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/vendor/lib64/hw:/system/lib64/hw 
-<<<<<<< HEAD
-    mkdir /mnt/vendor/persist 0700 root root
-    mount ext4 /dev/block/by-name/persist /mnt/vendor/persist rw
-=======
-    
->>>>>>> bac8990 (Optimize)
 
 on fs
     install_keyring
