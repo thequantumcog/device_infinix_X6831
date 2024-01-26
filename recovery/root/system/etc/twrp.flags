@@ -13,9 +13,9 @@
 /spmfw              emmc      /dev/block/platform/bootdevice/by-name/spmfw                  flags=display="Spmfw";slotselect
 /sspm               emmc      /dev/block/platform/bootdevice/by-name/sspm                   flags=display="Sspm";slotselect
 /tee                emmc      /dev/block/platform/bootdevice/by-name/tee                    flags=display="tee";slotselect
-/vbmeta             emmc      /dev/block/platform/bootdevice/by-name/vbmeta                 flags=display="VBmeta";backup=1;flashimg;slotselect
-/vbmeta_system      emmc      /dev/block/platform/bootdevice/by-name/vbmeta_system          flags=display="VBmeta_system";backup=1;flashimg;slotselect
-/vbmeta_vendor      emmc      /dev/block/platform/bootdevice/by-name/vbmeta_vendor          flags=display="VBmeta_vendor";backup=1;flashimg;slotselect
+/vbmeta             emmc      /dev/block/platform/bootdevice/by-name/vbmeta                 flags=display="Vbmeta";backup=1;flashimg;slotselect
+/vbmeta_system      emmc      /dev/block/platform/bootdevice/by-name/vbmeta_system          flags=display="Vbmeta_system";backup=1;flashimg;slotselect
+/vbmeta_vendor      emmc      /dev/block/platform/bootdevice/by-name/vbmeta_vendor          flags=display="Vbmeta_vendor";backup=1;flashimg;slotselect
 /expdb              emmc      /dev/block/platform/bootdevice/by-name/expdb                  flags=display="Expdb"
 /otp                emmc      /dev/block/platform/bootdevice/by-name/otp                    flags=display="Otp"
 /seccfg             emmc      /dev/block/platform/bootdevice/by-name/seccfg                 flags=display="Seccfg"
@@ -34,9 +34,9 @@
 /external_sd        auto      /dev/block/mmcblk1p1      /dev/block/mmcblk1                  flags=storage;wipeingui;removable
 /usb_otg            auto      /dev/block/sda1           /dev/block/sdd                      flags=storage;wipeingui;removable;display="USB OTG"
 # Flashable logical partitions
-/system_image		emmc		/dev/block/bootdevice/by-name/system									flags=backup;flashimg
-/vendor_image		emmc		/dev/block/bootdevice/by-name/vendor									flags=backup;flashimg
-/system_ext_image	emmc		/dev/block/bootdevice/by-name/system_ext								flags=display="System_EXT Image";backup;flashimg
-/product_image		emmc		/dev/block/bootdevice/by-name/product									flags=display="Product Image";backup;flashimg
-/vendor_dlkm_image	emmc		/dev/block/bootdevice/by-name/vendor_dlkm								flags=display="VendorDLKM Image";backup;flashimg
+/system_image		emmc		/dev/block/bootdevice/by-name/system									flags=backup;display="System";flashimg
+/vendor_image		emmc		/dev/block/bootdevice/by-name/vendor									flags=backup;display="Vendor";flashimg
+/system_ext_image	emmc		/dev/block/bootdevice/by-name/system_ext								flags=display="System_ext";backup;flashimg
+/product_image		emmc		/dev/block/bootdevice/by-name/product									flags=display="Product";backup;flashimg
+
 
