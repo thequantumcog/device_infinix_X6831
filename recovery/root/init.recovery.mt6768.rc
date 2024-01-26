@@ -2,12 +2,10 @@ import /tee.rc
 import /trustonic.rc
 
 on init
-    export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/vendor/lib64/hw:/system/lib64/hw
-    mkdir /mnt/vendor/persist 0700 root root
-    mount ext4 /dev/block/by-name/persist /mnt/vendor/persist rw
+    export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/vendor/lib64/hw:/system/lib64/hw 
+    
 
 on fs
-    #on property:ro.crypto.state=encrypted && property:ro.crypto.type=file
     install_keyring
 
 service vendor.gatekeeper-1-0 /system/bin/hw/android.hardware.gatekeeper@1.0-service
@@ -35,29 +33,30 @@ service keymaster_attestation-1-1 /system/bin/vendor.mediatek.hardware.keymaster
     seclabel u:r:recovery:s0
 
 on property:hwservicemanager.ready=true
-    start keystore2
+    #start keystore2 (test without it)
     start mobicore
     start keymaster-4-1
     start gatekeeper-1-0
     start keymaster_attestation-1-1
-
     
 on property:ro.crypto.state=unsupported
     stop mobicore
     stop keymaster-4-1
     stop gatekeeper-1-0
+    stop keymaster_attestation-1-1
     
 on property:ro.crypto.state=unencrypted
     stop mobicore
     stop keymaster-4-1
     stop gatekeeper-1-0
+    stop keymaster_attestation-1-1
         
 on property:twrp.decrypt.done=true
     stop mobicore
     stop keymaster-4-1
     stop gatekeeper-1-0
+    stop keymaster_attestation-1-1
    
-
 service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
     class main
     user root
@@ -66,25 +65,25 @@ service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
     oneshot
     seclabel u:r:recovery:s0
 
-service keystore_auth /system/bin/keystore_auth
-    oneshot
-    user system
-    group root
-    disabled
-    seclabel u:r:recovery:s0
+#service keystore_auth /system/bin/keystore_auth
+#    oneshot
+#    user system
+#    group root
+#    disabled
+#    seclabel u:r:recovery:s0
 
-service keystore /system/bin/keystore /tmp/misc/keystore
-    user root
-    group root drmrpc readproc log
-    disabled
-    seclabel u:r:recovery:s0    
+#service keystore /system/bin/keystore /tmp/misc/keystore
+#    user root
+#    group root drmrpc readproc log
+#    disabled
+#    seclabel u:r:recovery:s0    
 
 # We need vold early for metadata encryption
-on early-fs
-    start vold
+#on early-fs
+#    start vold
 
     # Mount RW partitions which need run fsck
-    mount_all /first_stage_ramdisk/fstab.mt6768 --late
+#    mount_all /first_stage_ramdisk/fstab.mt6768 --late
 
 on init
     setprop sys.usb.configfs 1
@@ -99,6 +98,7 @@ on fs && property:ro.debuggable=0
 
 on post-fs
     start mtk.plpath.utils.link
+
     symlink /dev/block/mmcblk0boot0 /dev/block/by-name/preloader_a
     symlink /dev/block/mmcblk0boot1 /dev/block/by-name/preloader_b
     symlink /dev/block/by-name/preloader_a /dev/block/by-name/preloader_emmc_a
