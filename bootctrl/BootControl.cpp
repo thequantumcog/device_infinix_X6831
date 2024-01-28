@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include <cstdint>
 #define LOG_TAG "android.hardware.boot@1.2-mtkimpl"
 
 #include <memory>
@@ -142,7 +143,9 @@ Return<MergeStatus> BootControl::getSnapshotMergeStatus() {
     return impl_.GetSnapshotMergeStatus();
 }
 
+// Methods from ::android::hardware::boot::V1_2::IBootControl follow.
 Return<uint32_t> BootControl::getActiveBootSlot() {
+    if (!impl_.GetActiveBootSlot()) return 0;
     return impl_.GetActiveBootSlot();
 }
 
@@ -156,7 +159,7 @@ IBootControl* HIDL_FETCH_IBootControl(const char* /* hal */) {
 }
 
 }  // namespace implementation
-}  // namespace V1_1
+}  // namespace V1_2
 }  // namespace boot
 }  // namespace hardware
 }  // namespace android

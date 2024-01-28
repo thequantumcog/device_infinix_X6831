@@ -25,9 +25,8 @@ cc_library_shared {
     vendor: true,
     recovery_available: true,
     srcs: ["BootControl.cpp", "boot_region_control.cpp"],
-    cppflags: ["-Wno-unused-variable"],
-    cflags: ["-Wno-unused-variable"],
-    header_libs: ["generated_kernel_headers"],
+
+    header_libs: ["device_kernel_headers"],
 
     shared_libs: [
         "liblog",
@@ -36,7 +35,7 @@ cc_library_shared {
         "libutils",
         "android.hardware.boot@1.0",
         "android.hardware.boot@1.1",
-        "android.hardware.boot@1.2",
+        "android.hardware.boot@1.2"
     ],
     static_libs: [
         "libboot_control",
