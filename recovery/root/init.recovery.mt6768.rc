@@ -1,5 +1,4 @@
 import /tee.rc
-import /trustonic.rc
 
 on init
     export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/vendor/lib64/hw:/system/lib64/hw 
@@ -32,7 +31,6 @@ service keymaster_attestation-1-1 /system/bin/vendor.mediatek.hardware.keymaster
     seclabel u:r:recovery:s0
 
 on property:hwservicemanager.ready=true
-    #start keystore2 (test without it)
     start mobicore
     start keymaster-4-1
     start gatekeeper-1-0
@@ -63,26 +61,6 @@ service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
     disabled
     oneshot
     seclabel u:r:recovery:s0
-
-#service keystore_auth /system/bin/keystore_auth
-#    oneshot
-#    user system
-#    group root
-#    disabled
-#    seclabel u:r:recovery:s0
-
-#service keystore /system/bin/keystore /tmp/misc/keystore
-#    user root
-#    group root drmrpc readproc log
-#    disabled
-#    seclabel u:r:recovery:s0    
-
-# We need vold early for metadata encryption
-#on early-fs
-#    start vold
-
-    # Mount RW partitions which need run fsck
-#    mount_all /first_stage_ramdisk/fstab.mt6768 --late
 
 on init
     setprop sys.usb.configfs 1

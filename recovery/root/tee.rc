@@ -1,3 +1,19 @@
+# Start Daemon (Registry directories should already be present)
+service mobicore /system/bin/mcDriverDaemon --P1 /mnt/vendor/persist/mcRegistry \
+	-r /vendor/app/mcRegistry/020f0000000000000000000000000000.drbin \
+	-r /vendor/app/mcRegistry/030b0000000000000000000000000000.drbin \
+	-r /vendor/app/mcRegistry/05120000000000000000000000000000.drbin \
+	-r /vendor/app/mcRegistry/05120000000000000000000000000001.drbin \
+	-r /vendor/app/mcRegistry/06090000000000000000000000000000.drbin \
+	-r /vendor/app/mcRegistry/07050000000000000000000000003545.drbin \
+	-r /vendor/app/mcRegistry/07150000000000000000000000000000.drbin \
+	-r /vendor/app/mcRegistry/07170000000000000000000000000000.drbin 
+
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
+
 on init
     #create mountpoint for /mnt/vendor/persist partition
     mkdir /mnt/vendor/persist 0771 root root
@@ -44,3 +60,21 @@ on property:sys.boot_completed=1
 
     chown system system /data/vendor/mcRegistry/TbStorage
     chmod 0700 /data/vendor/mcRegistry/TbStorage
+
+# t-Drv naming
+# 020f0000000000000000000000000000.drbin : utils
+# 05120000000000000000000000000000.drbin : sec
+# 05140000000000000000000000000000.drbin : devinfo
+# 070b0000000000000000000000000000.drbin : tplay
+# 020b0000000000000000000000000000.drbin : cmdq
+# 05070000000000000000000000000000.drbin : goodix_fp
+# 07090000000000000000000000000000.drbin : sunwave_fp
+# 030b0000000000000000000000000000.drbin : spi
+# 030c0000000000000000000000000000.drbin : spi1
+# 07070000000000000000000000000000.drbin : MtkH264Venc
+# 07060000000000000000000000007169.drbin : MtkH264Vdec
+# 5020170115e016302017012521300000.drbin : drm_hdcp_common
+# 40188311faf343488db888ad39496f9a.drbin : widevine
+# 06090000000000000000000000000000.drbin : drm keyinstall
+
+

@@ -32,7 +32,7 @@ TARGET_SUPPORTS_64_BIT_APPS := true
 TARGET_OTA_ASSERT_DEVICE := Infinix-X6831,X6831
 
 # Bootloader
-TARGET_BOOTLOADER_BOARD_NAME := CY-X6831-V7520
+TARGET_BOOTLOADER_BOARD_NAME := Infinix-X6831
 TARGET_NO_BOOTLOADER := true
 
 # Platform
@@ -92,7 +92,7 @@ BOARD_MAIN_PARTITION_LIST :=  \
 BOARD_FLASH_BLOCK_SIZE := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
 BOARD_USES_METADATA_PARTITION := true
 BOARD_USES_PRODUCTIMAGE := true
-BOARD_BOOTIMAGE_PARTITION_SIZE := 67108864
+BOARD_BOOTIMAGE_PARTITION_SIZE := 33554432
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 
@@ -130,45 +130,51 @@ PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
 # Recovery
 BOARD_HAS_LARGE_FILESYSTEM := true
 BOARD_USES_RECOVERY_AS_BOOT := true
-TW_NO_FLASH_CURRENT_TWRP := true
 TW_NO_FASTBOOT_BOOT := true
+TW_INCLUDE_FASTBOOTD := true
 TARGET_NO_RECOVERY := true
 TW_HAS_NO_RECOVERY_PARTITION := true
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 
-# Hardware
+# MTK
 BOARD_USES_MTK_HARDWARE := true
 
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
 
-## TWRP-Specific configuration
+## Theme
 TW_THEME := portrait_hdpi
-TW_DEVICE_VERSION := ${shell git -C $(DEVICE_PATH) rev-parse --short HEAD}-ardrag0n
-TW_CUSTOM_CLOCK_POS := 40
-TW_CUSTOM_CPU_POS := 290
 RECOVERY_SDCARD_ON_DATA := true
+BOARD_HAS_NO_REAL_SDCARD := true
 TARGET_USES_MKE2FS := true
+# Brightness
 TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TW_DEFAULT_BRIGHTNESS := 1200
 TW_MAX_BRIGHTNESS := 2047
+# Excludes
 TW_EXCLUDE_DEFAULT_USB_INIT := true
+TW_EXCLUDE_APEX := true
 TW_EXCLUDE_BASH := true
 TW_EXCLUDE_NANO := true
 TW_EXCLUDE_TWRPAPP := true
 TW_EXCLUDE_SUPERSU := true
-BOARD_HAS_NO_REAL_SDCARD := true
+# Includes
+TW_INCLUDE_RESETPROP := true
+TW_INCLUDE_LPTOOLS := true
+TW_INCLUDE_NTFS_3G := true
+#Tweaks
 #TW_NO_SCREEN_BLANK := true
 #TW_SCREEN_BLANK_ON_BOOT := true
-TW_INCLUDE_RESETPROP := true
 TW_FRAMERATE := 60
 TW_HAS_MTP := true
-#TW_NO_FLASH_CURRENT_TWRP := true
-#TW_OVERRIDE_SYSTEM_PROPS := \
-    "ro.build.date.utc;ro.bootimage.build.date.utc=ro.build.date.utc;ro.odm.build.date.utc=ro.build.date.utc;ro.product.build.date.utc=ro.build.date.utc;ro.system.build.date.utc=ro.build.date.utc;ro.system_ext.build.date.utc=ro.build.date.utc;ro.vendor.build.date.utc=ro.build.date.utc;ro.build.product;ro.build.fingerprint=ro.system.build.fingerprint;ro.build.version.incremental;ro.product.device=ro.product.system.device;ro.product.model=ro.product.system.model;ro.product.name=ro.product.system.name"
-TW_INCLUDE_NTFS_3G := true
-TW_INCLUDE_REPACKTOOLS := true
-TW_INCLUDE_LPTOOLS := true
+TW_NO_FLASH_CURRENT_TWRP := true
 
+# Status bar alignment
+TW_STATUS_ICONS_ALIGN := center
+TW_CUSTOM_CPU_POS := "300"
+TW_CUSTOM_CLOCK_POS := "70"
+TW_CUSTOM_BATTERY_POS := "790"
+# Version
+TW_DEVICE_VERSION := ${shell git -C $(DEVICE_PATH) rev-parse --short HEAD}-ardrag0n
 # Debug
-TWRP_INCLUDE_LOGCAT := true
-TARGET_USES_LOGD := true
+#TWRP_INCLUDE_LOGCAT := true
+#TARGET_USES_LOGD := true
