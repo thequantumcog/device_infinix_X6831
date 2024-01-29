@@ -145,8 +145,6 @@ TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
 
 ## Theme
 TW_THEME := portrait_hdpi
-TW_CUSTOM_CLOCK_POS := 40
-TW_NO_CPU_TEMP := true
 RECOVERY_SDCARD_ON_DATA := true
 BOARD_HAS_NO_REAL_SDCARD := true
 TARGET_USES_MKE2FS := true
@@ -163,7 +161,6 @@ TW_EXCLUDE_TWRPAPP := true
 TW_EXCLUDE_SUPERSU := true
 # Includes
 TW_INCLUDE_RESETPROP := true
-TW_INCLUDE_REPACKTOOLS := true
 TW_INCLUDE_LPTOOLS := true
 TW_INCLUDE_NTFS_3G := true
 #Tweaks
@@ -173,7 +170,11 @@ TW_FRAMERATE := 60
 TW_HAS_MTP := true
 TW_NO_FLASH_CURRENT_TWRP := true
 
-
+# Status bar alignment
+TW_STATUS_ICONS_ALIGN := center
+TW_CUSTOM_CPU_POS := 580
+TW_CUSTOM_CLOCK_POS := 60
+# Version
 TW_DEVICE_VERSION := ${shell git -C $(DEVICE_PATH) rev-parse --short HEAD}-ardrag0n
 # Debug
 #TWRP_INCLUDE_LOGCAT := true
