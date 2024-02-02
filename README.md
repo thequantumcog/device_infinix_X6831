@@ -23,7 +23,7 @@ Minor checks
 - [x] MTP export
 - [x] reboot to bootloader
 - [x] reboot to recovery
-- [ ] reboot to fastbootd
+- [x] reboot to fastbootd (fixed)
 - [x] poweroff
 - [x] battery level
 - [x] temperature
