@@ -180,3 +180,7 @@ TW_DEVICE_VERSION := ${shell git -C $(DEVICE_PATH) rev-parse --short HEAD}-ardra
 # Debug
 #TWRP_INCLUDE_LOGCAT := true
 #TARGET_USES_LOGD := true
+## TEST BUILD
+TARGET_USES_UEFI := true
+BOARD_HAS_NO_SELECT_BUTTON := true
+
