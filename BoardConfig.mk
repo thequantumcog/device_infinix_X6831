@@ -146,8 +146,8 @@ TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
 
 ## Theme
 TW_THEME := portrait_hdpi
-RECOVERY_SDCARD_ON_DATA := true
-BOARD_HAS_NO_REAL_SDCARD := true
+#RECOVERY_SDCARD_ON_DATA := true
+#BOARD_HAS_NO_REAL_SDCARD := true
 TARGET_USES_MKE2FS := true
 # Brightness
 TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
