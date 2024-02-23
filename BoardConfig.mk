@@ -140,14 +140,14 @@ TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 # MTK
 BOARD_HAS_MTK_HARDWARE := true
 BOARD_USES_MTK_HARDWARE := true
-MTK_HARDWARE := true
+#MTK_HARDWARE := true
 
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
 
 ## Theme
 TW_THEME := portrait_hdpi
-#RECOVERY_SDCARD_ON_DATA := true
-#BOARD_HAS_NO_REAL_SDCARD := true
+RECOVERY_SDCARD_ON_DATA := true
+BOARD_HAS_NO_REAL_SDCARD := true
 TARGET_USES_MKE2FS := true
 # Brightness
 TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
@@ -165,8 +165,8 @@ TW_INCLUDE_RESETPROP := true
 TW_INCLUDE_LPTOOLS := true
 TW_INCLUDE_NTFS_3G := true
 #Tweaks
-#TW_NO_SCREEN_BLANK := true
-#TW_SCREEN_BLANK_ON_BOOT := true
+TW_NO_SCREEN_BLANK := true
+TW_SCREEN_BLANK_ON_BOOT := true
 TW_FRAMERATE := 60
 TW_HAS_MTP := true
 TW_NO_FLASH_CURRENT_TWRP := true
@@ -180,7 +180,4 @@ TW_DEVICE_VERSION := ${shell git -C $(DEVICE_PATH) rev-parse --short HEAD}-ardra
 # Debug
 #TWRP_INCLUDE_LOGCAT := true
 #TARGET_USES_LOGD := true
-## TEST BUILD
-TARGET_USES_UEFI := true
-BOARD_HAS_NO_SELECT_BUTTON := true
 
