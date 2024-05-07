@@ -175,7 +175,7 @@ TW_CUSTOM_CPU_POS := "300"
 TW_CUSTOM_CLOCK_POS := "70"
 TW_CUSTOM_BATTERY_POS := "790"
 # Version
-TW_DEVICE_VERSION := ${shell git -C $(DEVICE_PATH) rev-parse --short HEAD}-ardrag0n
+TW_DEVICE_VERSION := ${shell git -C $(DEVICE_PATH) rev-parse --short HEAD}-thequantumcog
 # Debug
 #TWRP_INCLUDE_LOGCAT := true
 #TARGET_USES_LOGD := true
