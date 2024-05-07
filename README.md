@@ -2,7 +2,7 @@
 
 Blocking checks
 - [x] Correct screen/recovery size
-- [x] Working Touch, screen ~~(sometimes working, TWRP specific bug, not present in OFRP/PBRP)~~
+- [x] Working Touch ~~(sometimes working, TWRP specific bug, not present in OFRP/PBRP)~~
 - [x] Backup to internal/microSD
 - [x] Restore from internal/microSD
 - [x] reboot to system
