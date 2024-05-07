@@ -76,7 +76,7 @@ jobs:
       run: |
         mkdir -p ${GITHUB_WORKSPACE}/OrangeFox
         cd ${GITHUB_WORKSPACE}/OrangeFox
-        git config --global user.name "ardrag0n"
+        git config --global user.name "thequantumcog"
         git config --global user.email "ar0177417@gmail.com"
         git clone https://gitlab.com/OrangeFox/sync.git -b master
         cd sync
