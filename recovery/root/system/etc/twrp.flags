@@ -12,7 +12,7 @@
 /vbmeta_vendor		emmc		/dev/block/by-name/vbmeta_vendor							    flags=display=vbmeta_vendor;slotselect;backup;flashimg
 /gz			        emmc		/dev/block/by-name/gz											    flags=display=gz;slotselect;backup;flashimg
 /lk			            emmc		/dev/block/by-name/lk											    flags=display=lk;slotselect;backup;flashimg
-/md1img			    emmc		/dev/block/by-name/md1img										flags=display=md1img;slotselect;backup;flashimg
+/md1img			        emmc		/dev/block/by-name/md1img										flags=display=md1img;slotselect;backup;flashimg
 
 # Firmware
 /metadata		        ext4		/dev/block/by-name/metadata										flags=display=metadata;backup
