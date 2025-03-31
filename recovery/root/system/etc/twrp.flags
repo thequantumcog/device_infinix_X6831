@@ -42,8 +42,8 @@
 /sec1			        emmc		/dev/block/by-name/sec1											flags=display=sec1;backup
 /seccfg			    emmc		/dev/block/by-name/seccfg										flags=display=seccfg;backup
 /proinfo			    emmc		/dev/block/by-name/proinfo										flags=display=proinfo;backup
-/boot_para			    emmc		/dev/block/by-name/boot_para									    flags=display=boot_para;backup
-/flashinfo			    emmc		/dev/block/by-name/flashinfo									    flags=display=flashinfo;backup
+/boot_para			  emmc		/dev/block/by-name/boot_para									    flags=display=boot_para;backup
+/flashinfo			  emmc		/dev/block/by-name/flashinfo									    flags=display=flashinfo;backup
 
 # Removable Storage
 /external_sd		  auto		/dev/block/mmcblk1p1				/dev/block/mmcblk0p1					flags=display="Micro SD Card";storage;wipeingui;removable;backup=0
