@@ -20,7 +20,7 @@
 
 # Sensitive Data
 /nvcfg			        ext4		/dev/block/by-name/nvcfg										    flags=display=nvcfg;backup
-/persist_image		    emmc		/dev/block/by-name/persist										flags=display=persist;backup
+/persist_image		        emmc		/dev/block/by-name/persist										flags=display=persist;backup
 /persistent	        	emmc		/dev/block/by-name/frp											flags=display=persistent;backup
 
 # IMEI and modem related
