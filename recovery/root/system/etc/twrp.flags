@@ -24,7 +24,7 @@
 /persistent	        	emmc		/dev/block/by-name/frp											flags=display=persistent;backup
 
 # IMEI and modem related
-/nvdata			    ext4		/dev/block/by-name/nvdata										flags=display=nvdata;backup
+/nvdata			        ext4		/dev/block/by-name/nvdata										flags=display=nvdata;backup
 /protect_f		        ext4		/dev/block/by-name/protect1										flags=display=protect_f;backup
 /protect_s		        ext4		/dev/block/by-name/protect2										flags=display=protect_s;backup
 /nvram			        emmc		/dev/block/by-name/nvram										    flags=display=nvram;backup
