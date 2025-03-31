@@ -167,8 +167,8 @@ TW_INCLUDE_LPTOOLS := true
 TW_USE_TOOLBOX := true
 TW_INCLUDE_NTFS_3G := true
 #Tweaks
-#TW_NO_SCREEN_BLANK := true
 #TW_SCREEN_BLANK_ON_BOOT := true
+TW_NO_SCREEN_BLANK := true
 TW_FRAMERATE := 60
 TW_HAS_MTP := true
 TW_NO_FLASH_CURRENT_TWRP := true
@@ -178,7 +178,7 @@ TW_STATUS_ICONS_ALIGN := center
 TW_CUSTOM_CPU_POS := 580
 TW_CUSTOM_CLOCK_POS := 60
 # Version
-TW_DEVICE_VERSION := ${shell git -C $(DEVICE_PATH) rev-parse --short HEAD}-thequantumcog
+TW_DEVICE_VERSION := ${shell git -C $(DEVICE_PATH) rev-parse --short HEAD}-TegarXLu
 # Debug
 #TWRP_INCLUDE_LOGCAT := true
 #TARGET_USES_LOGD := true
