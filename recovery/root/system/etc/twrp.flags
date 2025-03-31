@@ -19,7 +19,7 @@
 /misc			        emmc		/dev/block/by-name/misc											flags=display=misc;backup
 
 # Sensitive Data
-/nvcfg			        ext4		/dev/block/by-name/nvcfg										    flags=display=nvcfg;backup
+/nvcfg			        ext4		/dev/block/by-name/nvcfg										flags=display=nvcfg;backup
 /persist_image		        emmc		/dev/block/by-name/persist										flags=display=persist;backup
 /persistent	        	emmc		/dev/block/by-name/frp											flags=display=persistent;backup
 
@@ -27,7 +27,7 @@
 /nvdata			        ext4		/dev/block/by-name/nvdata										flags=display=nvdata;backup
 /protect_f		        ext4		/dev/block/by-name/protect1										flags=display=protect_f;backup
 /protect_s		        ext4		/dev/block/by-name/protect2										flags=display=protect_s;backup
-/nvram			        emmc		/dev/block/by-name/nvram										    flags=display=nvram;backup
+/nvram			        emmc		/dev/block/by-name/nvram										flags=display=nvram;backup
 
 # Standard MediaTeks's partitions
 /logo			        emmc		/dev/block/by-name/logo											flags=display=logo;slotselect;backup;flashimg
