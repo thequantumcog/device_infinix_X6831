@@ -47,7 +47,7 @@
 
 # Removable Storage
 /external_sd		  auto		/dev/block/mmcblk1p1				/dev/block/mmcblk0p1					flags=display="Micro SD Card";storage;wipeingui;removable;backup=0
-/usb_otg		      auto		/dev/block/sda1					/dev/block/sda		/dev/block/sdd1			flags=display="USB-OTG";storage;wipeingui;removable;backup=0
+/usb_otg		  auto		/dev/block/sda1					/dev/block/sda		/dev/block/sdd1			flags=display="USB-OTG";storage;wipeingui;removable;backup=0
 
 # Flashable logical partitions Emmc
 /Product_Image          emmc      /dev/block/bootdevice/by-name/product                                  flags=display="Product_Imgae";slotselect;backup=1;resize=1;flashimg=1
