@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-LOCAL_PATH := device/infinix/X6831
+LOCAL_PATH := device/infinix/NovaX
 
 # A/B
 AB_OTA_PARTITIONS += \
