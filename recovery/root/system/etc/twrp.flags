@@ -49,8 +49,20 @@
 /external_sd		  auto		/dev/block/mmcblk1p1				/dev/block/mmcblk0p1					flags=display="Micro SD Card";storage;wipeingui;removable;backup=0
 /usb_otg		  auto		/dev/block/sda1					/dev/block/sda		/dev/block/sdd1			flags=display="USB-OTG";storage;wipeingui;removable;backup=0
 
-# Flashable logical partitions Emmc
-/Product_Image          emmc      /dev/block/mapper/product                                  flags=display="Product_Imgae";slotselect;backup=1;resize=1;flashimg=1
-/System_Image           emmc      /dev/block/mapper/system                                   flags=display="System_Image";slotselect;backup=1;resize=1;flashimg=1
-/System_ext_Image       emmc      /dev/block/mapper/system_ext                               flags=display="System_ext_Image";slotselect;backup=1;resize=1;flashimg=1
-/Vendor_Image           emmc      /dev/block/mapper/vendor                                   flags=display="Vendor_Image";slotselect;backup=1;resize=1;flashimg=1
+# Flashable Logical Partitions emmc
+/Product_a         emmc      /dev/block/mapper/product_a                               flags=display="Product_a";slotselect;backup=1;resize=1;flashimg=1
+/System_a           emmc      /dev/block/mapper/system_a                               flags=display="System_a";slotselect;backup=1;resize=1;flashimg=1
+/System_ext_a      emmc      /dev/block/mapper/system_ext_a                             flags=display="System_ext_a";slotselect;backup=1;resize=1;flashimg=1
+/Vendor_a           emmc      /dev/block/mapper/vendor_a                                flags=display="Vendor_a";slotselect;backup=1;resize=1;flashimg=1
+
+# Flashable Logical Partitions emmc
+/Product_b         emmc      /dev/block/mapper/product_b                               flags=display="Product_b";slotselect;backup=1;resize=1;flashimg=1
+/System_b           emmc      /dev/block/mapper/system_b                               flags=display="System_b";slotselect;backup=1;resize=1;flashimg=1
+/System_ext_b      emmc      /dev/block/mapper/system_ext_b                             flags=display="System_ext_b";slotselect;backup=1;resize=1;flashimg=1
+/Vendor_b           emmc      /dev/block/mapper/vendor_b                                flags=display="Vendor_b";slotselect;backup=1;resize=1;flashimg=1
+
+# Flashable logical partitions
+/system_image		emmc		/dev/block/bootdevice/by-name/system									flags=backup;display="System";flashimg
+/vendor_image		emmc		/dev/block/bootdevice/by-name/vendor									flags=backup;display="Vendor";flashimg
+/system_ext_image	emmc		/dev/block/bootdevice/by-name/system_ext								flags=display="System_ext";backup;flashimg
+/product_image		emmc		/dev/block/bootdevice/by-name/product									flags=display="Product";backup;flashimg
