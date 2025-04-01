@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-DEVICE_PATH := device/infinix/X6831
+DEVICE_PATH := device/infinix/NovaX
 
 # For building with minimal manifest
 ALLOW_MISSING_DEPENDENCIES := true
@@ -29,10 +29,10 @@ TARGET_BOARD_SUFFIX := _64
 TARGET_SUPPORTS_64_BIT_APPS := true
 
 # Assert
-TARGET_OTA_ASSERT_DEVICE := Infinix-X6831,X6831
+TARGET_OTA_ASSERT_DEVICE := Infinix-NovaX,NovaX
 
 # Bootloader
-TARGET_BOOTLOADER_BOARD_NAME := Infinix-X6831
+TARGET_BOOTLOADER_BOARD_NAME := Infinix-NovaX
 TARGET_NO_BOOTLOADER := true
 
 # Platform
