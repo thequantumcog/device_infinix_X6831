@@ -178,7 +178,7 @@ TW_STATUS_ICONS_ALIGN := center
 TW_CUSTOM_CPU_POS := 580
 TW_CUSTOM_CLOCK_POS := 60
 # Version
-TW_DEVICE_VERSION := ${shell git -C $(DEVICE_PATH) rev-parse --short HEAD}-TegarXLu
+TW_DEVICE_VERSION := TegarXLu | X6831 >a13<
 # Debug
 #TWRP_INCLUDE_LOGCAT := true
 #TARGET_USES_LOGD := true
