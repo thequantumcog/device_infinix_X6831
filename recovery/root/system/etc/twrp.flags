@@ -51,14 +51,14 @@
 
 # Flashable Logical Partitions emmc
 /Product_a          emmc      /dev/block/mapper/product_a                               flags=display="Product_a";slotselect;backup=1;resize=1;flashimg=1
-/System_a           emmc      /dev/block/mapper/system_a                               flags=display="System_a";slotselect;backup=1;resize=1;flashimg=1
-/System_ext_a       emmc      /dev/block/mapper/system_ext_a                             flags=display="System_ext_a";slotselect;backup=1;resize=1;flashimg=1
+/System_a           emmc      /dev/block/mapper/system_a                                flags=display="System_a";slotselect;backup=1;resize=1;flashimg=1
+/System_ext_a       emmc      /dev/block/mapper/system_ext_a                            flags=display="System_ext_a";slotselect;backup=1;resize=1;flashimg=1
 /Vendor_a           emmc      /dev/block/mapper/vendor_a                                flags=display="Vendor_a";slotselect;backup=1;resize=1;flashimg=1
 
 # Flashable Logical Partitions emmc
 /Product_b          emmc      /dev/block/mapper/product_b                               flags=display="Product_b";slotselect;backup=1;resize=1;flashimg=1
-/System_b           emmc      /dev/block/mapper/system_b                               flags=display="System_b";slotselect;backup=1;resize=1;flashimg=1
-/System_ext_b       emmc      /dev/block/mapper/system_ext_b                             flags=display="System_ext_b";slotselect;backup=1;resize=1;flashimg=1
+/System_b           emmc      /dev/block/mapper/system_b                                flags=display="System_b";slotselect;backup=1;resize=1;flashimg=1
+/System_ext_b       emmc      /dev/block/mapper/system_ext_b                            flags=display="System_ext_b";slotselect;backup=1;resize=1;flashimg=1
 /Vendor_b           emmc      /dev/block/mapper/vendor_b                                flags=display="Vendor_b";slotselect;backup=1;resize=1;flashimg=1
 
 # Flashable logical partitions
