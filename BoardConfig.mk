@@ -202,3 +202,4 @@ TW_DEVICE_VERSION := TegarXLu | NovaX >a13<
 #PBRP_FLAGS
 PB_TORCH_PATH := "/sys/devices/virtual/torch/torch/torch_level"
 PB_TORCH_MAX_BRIGHTNESS := 1
+PB_MAINTAINER := TegarXLu
