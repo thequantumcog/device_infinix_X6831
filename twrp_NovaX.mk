@@ -21,7 +21,7 @@ $(call inherit-product, vendor/twrp/config/common.mk)
 # Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := NovaX
 PRODUCT_NAME := twrp_NovaX
-PRODUCT_BRAND := Infinix
+PRODUCT_BRAND := TegarXLu
 PRODUCT_MODEL := Infinix HOT 30
 PRODUCT_MANUFACTURER := infinix
 
