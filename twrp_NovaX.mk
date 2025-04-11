@@ -22,6 +22,6 @@ $(call inherit-product, vendor/twrp/config/common.mk)
 PRODUCT_DEVICE := NovaX
 PRODUCT_NAME := twrp_NovaX
 PRODUCT_BRAND := TegarXLu
-PRODUCT_MODEL := Infinix HOT 30
+PRODUCT_MODEL := | Infinix HOT 30
 PRODUCT_MANUFACTURER := infinix
 
