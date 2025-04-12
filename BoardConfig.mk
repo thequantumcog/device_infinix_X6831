@@ -4,6 +4,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
+
 DEVICE_PATH := device/infinix/NovaX
 # For building with minimal manifest
 ALLOW_MISSING_DEPENDENCIES                      := true
