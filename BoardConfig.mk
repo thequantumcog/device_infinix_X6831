@@ -4,13 +4,10 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-
 DEVICE_PATH := device/infinix/NovaX
-
 # For building with minimal manifest
 ALLOW_MISSING_DEPENDENCIES                      := true
 BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES    := true
-
 # Architecture
 TARGET_ARCH                       := arm64
 TARGET_ARCH_VARIANT               := armv8-a
@@ -26,21 +23,16 @@ TARGET_2ND_CPU_VARIANT            := generic
 TARGET_2ND_CPU_VARIANT_RUNTIME    := cortex-a55
 TARGET_BOARD_SUFFIX               := _64
 TARGET_SUPPORTS_64_BIT_APPS       := true
-
 # Assert
 TARGET_OTA_ASSERT_DEVICE          := Infinix-NovaX,NovaX
 # Bootloader
-
 TARGET_BOOTLOADER_BOARD_NAME      := Infinix-NovaX
 TARGET_NO_BOOTLOADER              := true
-
 # Platform
 TARGET_BOARD_PLATFORM             := mt6768
 PRODUCT_PLATFORM                  := mt6768
-
 # A/B
 AB_OTA_UPDATER                    := true
-
 # Kernel
 BOARD_KERNEL_CMDLINE              := bootopt=64S3,32N2,64N2
 TARGET_PREBUILT_KERNEL            := $(DEVICE_PATH)/prebuilt/kernel
@@ -55,7 +47,6 @@ BOARD_MKBOOTIMG_ARGS              += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
 BOARD_MKBOOTIMG_ARGS              += --dtb $(TARGET_PREBUILT_DTB)
 BOARD_MKBOOTIMG_ARGS              += --header_version $(BOARD_BOOTIMG_HEADER_VERSION)
 BOARD_KERNEL_IMAGE_NAME           := Image
-
 # AVB
 # Verified Boot
 BOARD_AVB_ENABLE                                  := true
@@ -74,7 +65,6 @@ BOARD_AVB_RECOVERY_ALGORITHM                      := SHA256_RSA2048
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX                 := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION        := 3
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS                  += --flags 3
-
 # Dynamic Partitions
 BOARD_SUPER_PARTITION_SIZE      := 10522669056
 BOARD_SUPER_PARTITION_GROUPS    := main
@@ -84,7 +74,6 @@ BOARD_MAIN_PARTITION_LIST       :=  \
     system_ext \
     vendor \
     product
-
 # Partitions size
 BOARD_FLASH_BLOCK_SIZE             := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
 BOARD_USES_METADATA_PARTITION      := true
@@ -92,7 +81,6 @@ BOARD_USES_PRODUCTIMAGE            := true
 BOARD_BOOTIMAGE_PARTITION_SIZE     := 41943040
 TARGET_USERIMAGES_USE_EXT4         := true
 TARGET_USERIMAGES_USE_F2FS         := true
-
 # File systems
 BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE        := ext4
 BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE         := ext4
@@ -101,32 +89,26 @@ BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE       := f2fs
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE         := ext4
 TARGET_USERIMAGES_USE_EXT4                 := true
 TARGET_USERIMAGES_USE_F2FS                 := true
-
 # System as root
 BOARD_SUPPRESS_SECURE_ERASE      := true
 BOARD_BUILD_SYSTEM_ROOT_IMAGE    := false
-
 # Workaround for copying error vendor files to recovery ramdisk
 TARGET_COPY_OUT_PRODUCT           := product
 TARGET_COPY_OUT_SYSTEM            := system
 TARGET_COPY_OUT_SYSTEM_EXT        := system_ext
 TARGET_COPY_OUT_VENDOR            := vendor
-
 # Crypto
 TW_INCLUDE_CRYPTO                 := true
 TW_INCLUDE_CRYPTO_FBE             := true
 TW_INCLUDE_FBE_METADATA_DECRYPT   := true
 BOARD_ROOT_EXTRA_FOLDERS          += metadata
-
 # Properties
 TARGET_SYSTEM_PROP               += $(DEVICE_PATH)/system.prop
-
 # Encryption
 PLATFORM_SECURITY_PATCH          := 2099-12-31
 VENDOR_SECURITY_PATCH            := $(PLATFORM_SECURITY_PATCH)
 PLATFORM_VERSION                 := 16.1.0
 PLATFORM_VERSION_LAST_STABLE     := $(PLATFORM_VERSION)
-
 # Recovery
 BOARD_HAS_LARGE_FILESYSTEM     := true
 BOARD_USES_RECOVERY_AS_BOOT    := true
@@ -136,25 +118,20 @@ TARGET_NO_RECOVERY             := true
 TW_INCLUDE_INJECTTWRP          := false
 TW_HAS_NO_RECOVERY_PARTITION   := true
 TARGET_RECOVERY_PIXEL_FORMAT   := "RGBX_8888"
-
 # MTK
 BOARD_HAS_MTK_HARDWARE    := true
 BOARD_USES_MTK_HARDWARE   := true
 MTK_HARDWARE              := true
-
 TARGET_RECOVERY_FSTAB     := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
-
 ## Theme
 TW_THEME                  := portrait_hdpi
 RECOVERY_SDCARD_ON_DATA   := true
 BOARD_HAS_NO_REAL_SDCARD  := true
 TARGET_USES_MKE2FS        := true
-
 # Brightness
 TW_BRIGHTNESS_PATH      := "/sys/class/leds/lcd-backlight/brightness"
 TW_DEFAULT_BRIGHTNESS   := 1200
 TW_MAX_BRIGHTNESS       := 2047
-
 # Excludes
 TW_EXCLUDE_MTP                 := true
 TW_EXCLUDE_DEFAULT_USB_INIT    := true
@@ -164,38 +141,30 @@ TW_EXCLUDE_NANO                := true
 TW_EXCLUDE_TWRPAPP             := false
 TW_EXCLUDE_SUPERSU             := true
 TW_EXCLUDE_PYTHON              := true
-
 # Includes
 TW_INCLUDE_RESETPROP     := true
 TW_INCLUDE_LPTOOLS       := true
 TW_USE_TOOLBOX           := true
 TW_INCLUDE_NTFS_3G       := true
-
 #Tweaks
 #TW_SCREEN_BLANK_ON_BOOT   := true
 TW_NO_SCREEN_BLANK         := true
 TW_FRAMERATE               := 60
 TW_HAS_MTP                 := true
 TW_NO_FLASH_CURRENT_TWRP   := true
-
 # prevent always stuck on recovery when rebooting to system
 TW_NO_FASTBOOT_BOOT      := true
-
 # FastbootD
 TW_INCLUDE_FASTBOOTD     := true
-
 # Status bar alignment
 TW_STATUS_ICONS_ALIGN    := center
 TW_CUSTOM_CPU_POS        := 580
 TW_CUSTOM_CLOCK_POS      := 60
-
 # Version
 TW_DEVICE_VERSION        := TegarXLu | NovaX >a13<
-
 # Debug
 #TWRP_INCLUDE_LOGCAT     := true
 #TARGET_USES_LOGD        := true
-
 #PBRP_FLAGS
 PB_TORCH_PATH            := "/sys/devices/virtual/torch/torch/torch_level"
 PB_TORCH_MAX_BRIGHTNESS  := 1
