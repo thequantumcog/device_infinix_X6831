@@ -44,8 +44,11 @@ on:
 
 jobs:
   build:
+    name: Build PBRP by ${{ github.actor }}
+    runs-on: ubuntu-22.04
     if: github.event.repository.owner.id == github.event.sender.id
-    runs-on: ubuntu-24.04
+    env:
+      DEBIAN_FRONTEND: noninteractive
     permissions:
       contents: write
     steps:
