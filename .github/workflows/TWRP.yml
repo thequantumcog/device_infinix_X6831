@@ -69,7 +69,7 @@ jobs:
       run: |
         sudo apt-get update
         DEBIAN_FRONTEND=noninteractive sudo apt-get install --no-install-recommends -yq \
-          bc bison build-essential curl flex fontconfig g++-multilib gcc-multilib \
+          bc bison build-essential ccache curl flex fontconfig g++-multilib gcc-multilib \
           git git-lfs gnupg gperf imagemagick libc6-dev-i386 lib32ncurses-dev \
           lib32readline-dev lib32z1-dev libbz2-dev libgl1-mesa-dev liblz4-tool \
           libncurses-dev libsdl1.2-dev libssl-dev libx11-dev libxml2 \
@@ -144,12 +144,36 @@ jobs:
           "${{ github.event.inputs.COMMON_TREE_URL }}" \
           "${{ github.event.inputs.COMMON_PATH }}"
 
+    - name: Restore ccache
+      uses: actions/cache/restore@v4
+      with:
+        path: ~/.cache/ccache
+        key: ccache-${{ runner.os }}-${{ github.event.inputs.MANIFEST_BRANCH }}-${{ github.event.inputs.DEVICE_NAME }}-${{ github.event.inputs.DEVICE_TREE_BRANCH }}-${{ github.run_id }}
+        restore-keys: |
+          ccache-${{ runner.os }}-${{ github.event.inputs.MANIFEST_BRANCH }}-${{ github.event.inputs.DEVICE_NAME }}-${{ github.event.inputs.DEVICE_TREE_BRANCH }}-
+
     - name: Building recovery
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
       run: |
+        export USE_CCACHE=1
+        export CCACHE_EXEC="$(command -v ccache)"
+        export CCACHE_DIR="$HOME/.cache/ccache"
+
+        ccache --set-config=max_size=3G
+        ccache --set-config=compression=true
+        ccache --set-config=compiler_check=content
+        ccache --zero-stats
+
         source build/envsetup.sh
         lunch "${{ github.event.inputs.MAKEFILE_NAME }}-eng"
         mka "${{ github.event.inputs.BUILD_TARGET }}image" -j"$(nproc)"
+        ccache --show-stats
+
+    - name: Save updated ccache
+      uses: actions/cache/save@v4
+      with:
+        path: ~/.cache/ccache
+        key: ccache-${{ runner.os }}-${{ github.event.inputs.MANIFEST_BRANCH }}-${{ github.event.inputs.DEVICE_NAME }}-${{ github.event.inputs.DEVICE_TREE_BRANCH }}-${{ github.run_id }}
 
     - name: Upload to Release
       uses: softprops/action-gh-release@v2
