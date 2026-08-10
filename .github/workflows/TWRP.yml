@@ -62,25 +62,19 @@ jobs:
         echo "Build Target: ${{ github.event.inputs.BUILD_TARGET }}.img"
         echo "::endgroup::"
 
-    # You might want to Checkout your repo first, but not mandatory
-    - name: Check Out
-      uses: actions/checkout@v4
-
-    # Cleanup The Actions Workspace Using Custom Composite Run Actions
     - name: Cleanup
-      uses: rokibhasansagar/slimhub_actions@main
-      # That's it! Now use your normal steps
+      uses: rokibhasansagar/slimhub_actions@c2a6e4317d3de2b623ac7395b05e9d2149e8289b
 
     - name: Prepare the environment
       run: |
-        sudo apt update && sudo apt upgrade -y
-        DEBIAN_FRONTEND=noninteractive sudo apt install -yq \
-            linux-modules-extra-$(uname -r) \
-            gperf gcc-multilib gcc-10-multilib g++-multilib g++-10-multilib \
-            libc6-dev lib32ncurses-dev x11proto-core-dev libx11-dev tree lib32z-dev libgl1-mesa-dev libxml2-utils \
-            xsltproc bc ccache lib32readline-dev lib32z1-dev liblz4-tool libncurses-dev libsdl1.2-dev \
-            build-essential libgtk-3-dev libglu1-mesa-dev freeglut3-dev git libxml2 lzop pngcrush schedtool squashfs-tools \
-            imagemagick libbz2-dev lzma ncftp qemu-user-static libstdc++-10-dev libncurses6 python3 tar
+        sudo apt-get update
+        DEBIAN_FRONTEND=noninteractive sudo apt-get install --no-install-recommends -yq \
+          bc bison build-essential curl flex fontconfig g++-multilib gcc-multilib \
+          git git-lfs gnupg gperf imagemagick libc6-dev-i386 lib32ncurses-dev \
+          lib32readline-dev lib32z1-dev libbz2-dev libgl1-mesa-dev liblz4-tool \
+          libncurses-dev libsdl1.2-dev libssl-dev libx11-dev libxml2 \
+          libxml2-utils lzma lzop pngcrush python3 rsync schedtool \
+          squashfs-tools tar unzip x11proto-core-dev xsltproc zip zlib1g-dev
 
     - name: Install OpenJDK
       uses: actions/setup-java@v4
@@ -99,65 +93,63 @@ jobs:
 
     - name: Install repo
       run: |
-        mkdir ~/bin
-        curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
-        chmod a+x ~/bin/repo
-        sudo ln -sf ~/bin/repo /usr/bin/repo
+        mkdir -p "$HOME/bin"
+        curl -fsSL https://storage.googleapis.com/git-repo-downloads/repo -o "$HOME/bin/repo"
+        chmod a+x "$HOME/bin/repo"
+        echo "$HOME/bin" >> "$GITHUB_PATH"
 
     - name: Initialize repo
-      run: |
-        mkdir workspace
-        cd workspace
-        echo "workspace-folder=$(pwd)" >> $GITHUB_OUTPUT
-        git config --global user.name "thequantumcog"
-        git config --global user.email "thequantumcog@protonmail.com"
-        repo init --depth=1 -u ${{ github.event.inputs.MANIFEST_URL }} -b ${{ github.event.inputs.MANIFEST_BRANCH }}
       id: pwd
+      run: |
+        mkdir -p workspace
+        cd workspace
+        echo "workspace-folder=$(pwd)" >> "$GITHUB_OUTPUT"
+        repo init \
+          --depth=1 \
+          --no-clone-bundle \
+          -u "${{ github.event.inputs.MANIFEST_URL }}" \
+          -b "${{ github.event.inputs.MANIFEST_BRANCH }}"
 
     - name: Repo Sync
-      run: |
-        repo sync -j$(nproc --all) --force-sync
       working-directory: workspace
+      run: |
+        repo sync \
+          -c \
+          --no-clone-bundle \
+          --no-tags \
+          --optimized-fetch \
+          --fail-fast \
+          -j"$(nproc)"
 
     - name: Clone device tree
-      run: |
-        git clone ${{ github.event.inputs.DEVICE_TREE_URL }} -b ${{ github.event.inputs.DEVICE_TREE_BRANCH }} ./${{ github.event.inputs.DEVICE_PATH }}
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
+      run: |
+        mkdir -p "$(dirname "${{ github.event.inputs.DEVICE_PATH }}")"
+        git clone \
+          --depth=1 \
+          --single-branch \
+          --branch "${{ github.event.inputs.DEVICE_TREE_BRANCH }}" \
+          "${{ github.event.inputs.DEVICE_TREE_URL }}" \
+          "${{ github.event.inputs.DEVICE_PATH }}"
 
     - name: Clone common tree
-      if: |
-        github.event.inputs.COMMON_TREE_URL != null
-        && github.event.inputs.COMMON_PATH != null
-      run: |
-        git clone ${{ github.event.inputs.COMMON_TREE_URL }} -b ${{ github.event.inputs.DEVICE_TREE_BRANCH }} ./${{ github.event.inputs.COMMON_PATH }}
+      if: ${{ github.event.inputs.COMMON_TREE_URL != '' && github.event.inputs.COMMON_PATH != '' }}
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
-
-    - name: Check Build Tree
-      uses: haya14busa/action-cond@v1
-      id: buildtree
-      with:
-        cond: ${{ github.event.inputs.MANIFEST_BRANCH == 'twrp-11' || github.event.inputs.MANIFEST_BRANCH == 'twrp-12.1' }}
-        if_true: twrp
-        if_false: omni
-
-    - name: Sync Device Dependencies
       run: |
-        bash ${GITHUB_WORKSPACE}/scripts/convert.sh ${{ github.event.inputs.DEVICE_PATH }}/${{ steps.buildtree.outputs.value }}.dependencies
-        repo sync -j$(nproc --all)
-      working-directory: ${{ steps.pwd.outputs.workspace-folder }}
-      continue-on-error: true
-
-    - name: Set Swap Space
-      uses: pierotofy/set-swap-space@master
-      with:
-        swap-size-gb: 12
+        mkdir -p "$(dirname "${{ github.event.inputs.COMMON_PATH }}")"
+        git clone \
+          --depth=1 \
+          --single-branch \
+          --branch "${{ github.event.inputs.DEVICE_TREE_BRANCH }}" \
+          "${{ github.event.inputs.COMMON_TREE_URL }}" \
+          "${{ github.event.inputs.COMMON_PATH }}"
 
     - name: Building recovery
+      working-directory: ${{ steps.pwd.outputs.workspace-folder }}
       run: |
         source build/envsetup.sh
-        export ALLOW_MISSING_DEPENDENCIES=true
-        lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng && make clean && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
-      working-directory: ${{ steps.pwd.outputs.workspace-folder }}
+        lunch "${{ github.event.inputs.MAKEFILE_NAME }}-eng"
+        mka "${{ github.event.inputs.BUILD_TARGET }}image" -j"$(nproc)"
 
     - name: Upload to Release
       uses: softprops/action-gh-release@v2
