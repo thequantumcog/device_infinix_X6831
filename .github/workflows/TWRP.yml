@@ -63,7 +63,16 @@ jobs:
         echo "::endgroup::"
 
     - name: Cleanup
-      uses: rokibhasansagar/slimhub_actions@c2a6e4317d3de2b623ac7395b05e9d2149e8289b
+      run: |
+        sudo rm -rf \
+          /usr/local/lib/android \
+          /usr/share/dotnet \
+          /usr/local/.ghcup \
+          /opt/ghc \
+          /usr/share/swift \
+          /usr/local/julia* \
+          /opt/microsoft/powershell
+        df -h /
 
     - name: Prepare the environment
       run: |
@@ -192,3 +201,10 @@ jobs:
         draft: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Measure build output
+      if: always()
+      working-directory: workspace
+      run: |
+          du -sh out
+          du -sh out/soong out/host/linux-x86 out/target/product/X6831
