@@ -9,7 +9,7 @@ on init
 on fs
     install_keyring
 
-service vendor.gatekeeper-1-0 /system/bin/hw/android.hardware.gatekeeper@1.0-service
+service gatekeeper-1-0 /system/bin/hw/android.hardware.gatekeeper@1.0-service
     interface android.hardware.gatekeeper@1.0::IGatekeeper default
     class hal
     user root
@@ -25,45 +25,45 @@ service keymaster-4-1 /system/bin/android.hardware.keymaster@4.1-service.truston
     disabled
     seclabel u:r:recovery:s0
     
-service keymaster_attestation-1-1 /system/bin/vendor.mediatek.hardware.keymaster_attestation@1.1-service
-    #interface vendor.mediatek.hardware.keymaster_attestation@1.0::IKeymasterDevice default
-    #interface vendor.mediatek.hardware.keymaster_attestation@1.1::IKeymasterDevice default
-    user root
-    group root
-    disabled
-    seclabel u:r:recovery:s0
+#service keymaster_attestation-1-1 /system/bin/vendor.mediatek.hardware.keymaster_attestation@1.1-service
+#    #interface vendor.mediatek.hardware.keymaster_attestation@1.0::IKeymasterDevice default
+#    #interface vendor.mediatek.hardware.keymaster_attestation@1.1::IKeymasterDevice default
+#    user root
+#    group root
+#    disabled
+#    seclabel u:r:recovery:s0
 
 on property:hwservicemanager.ready=true
     start mobicore
     start keymaster-4-1
     start gatekeeper-1-0
-    start keymaster_attestation-1-1
+#    start keymaster_attestation-1-1
     
 on property:ro.crypto.state=unsupported
     stop mobicore
     stop keymaster-4-1
     stop gatekeeper-1-0
-    stop keymaster_attestation-1-1
+#    stop keymaster_attestation-1-1
     
 on property:ro.crypto.state=unencrypted
     stop mobicore
     stop keymaster-4-1
     stop gatekeeper-1-0
-    stop keymaster_attestation-1-1
+#    stop keymaster_attestation-1-1
         
 on property:twrp.decrypt.done=true
     stop mobicore
     stop keymaster-4-1
     stop gatekeeper-1-0
-    stop keymaster_attestation-1-1
+#    stop keymaster_attestation-1-1
    
-service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
-    class main
-    user root
-    group root system
-    disabled
-    oneshot
-    seclabel u:r:recovery:s0
+# service mtk.plpath.utils.link /system/bin/mtk_plpath_utils
+#     class main
+#     user root
+#     group root system
+#     disabled
+#     oneshot
+#     seclabel u:r:recovery:s0
 
 on init
     setprop sys.usb.configfs 1
@@ -77,7 +77,7 @@ on fs && property:ro.debuggable=0
     start adbd
 
 on post-fs
-    start mtk.plpath.utils.link
+#    start mtk.plpath.utils.link
 
     symlink /dev/block/mmcblk0boot0 /dev/block/by-name/preloader_a
     symlink /dev/block/mmcblk0boot1 /dev/block/by-name/preloader_b
@@ -94,3 +94,7 @@ on boot
     start recovery
     start boot-hal-1-2
     start health-hal-2-1
+    # OTG FIX
+    chmod 0666 /sys/devices/platform/odm/odm:tran_battery/OTG_CTL
+    write /sys/devices/platform/odm/odm:tran_battery/OTG_CTL 1
+    write /sys/module/block/parameters/events_dfl_poll_msecs 1000
