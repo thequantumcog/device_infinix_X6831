@@ -165,7 +165,7 @@ TW_EXCLUDE_PYTHON := true
 TW_INCLUDE_RESETPROP := true
 TW_INCLUDE_LPTOOLS := true
 TW_USE_TOOLBOX := true
-TW_INCLUDE_NTFS_3G := true
+TW_INCLUDE_NTFS_3G := false
 #Tweaks
 TW_NO_SCREEN_BLANK := true
 #TW_SCREEN_BLANK_ON_BOOT := true
@@ -182,4 +182,3 @@ TW_DEVICE_VERSION := ${shell git -C $(DEVICE_PATH) rev-parse --short HEAD}-thequ
 # Debug
 TWRP_INCLUDE_LOGCAT := true
 TARGET_USES_LOGD := true
-
