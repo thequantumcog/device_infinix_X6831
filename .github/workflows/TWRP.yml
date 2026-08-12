@@ -62,18 +62,6 @@ jobs:
         echo "Build Target: ${{ github.event.inputs.BUILD_TARGET }}.img"
         echo "::endgroup::"
 
-    - name: Cleanup
-      run: |
-        sudo rm -rf \
-          /usr/local/lib/android \
-          /usr/share/dotnet \
-          /usr/local/.ghcup \
-          /opt/ghc \
-          /usr/share/swift \
-          /usr/local/julia* \
-          /opt/microsoft/powershell
-        df -h /
-
     - name: Prepare the environment
       run: |
         sudo apt-get update
@@ -153,13 +141,35 @@ jobs:
           "${{ github.event.inputs.COMMON_TREE_URL }}" \
           "${{ github.event.inputs.COMMON_PATH }}"
 
+    - name: Calculate source fingerprint
+      id: source
+      working-directory: ${{ steps.pwd.outputs.workspace-folder }}
+      run: |
+        echo "manifest=$(repo manifest -r | sha256sum | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+
     - name: Restore ccache
       uses: actions/cache/restore@v4
       with:
         path: ~/.cache/ccache
-        key: ccache-${{ runner.os }}-${{ github.event.inputs.MANIFEST_BRANCH }}-${{ github.event.inputs.DEVICE_NAME }}-${{ github.event.inputs.DEVICE_TREE_BRANCH }}-${{ github.run_id }}
+        key: ccache-${{ runner.os }}-${{ github.event.inputs.MANIFEST_BRANCH }}-${{ github.event.inputs.DEVICE_NAME }}-${{ github.event.inputs.DEVICE_TREE_BRANCH }}-${{ github.run_id }}-${{ github.run_attempt }}
         restore-keys: |
           ccache-${{ runner.os }}-${{ github.event.inputs.MANIFEST_BRANCH }}-${{ github.event.inputs.DEVICE_NAME }}-${{ github.event.inputs.DEVICE_TREE_BRANCH }}-
+
+    - name: Restore build output
+      uses: actions/cache/restore@v4
+      with:
+        path: workspace/out
+        key: out-${{ runner.os }}-${{ github.event.inputs.MANIFEST_BRANCH }}-${{ steps.source.outputs.manifest }}-${{ github.event.inputs.DEVICE_NAME }}-${{ github.event.inputs.DEVICE_TREE_BRANCH }}-${{ github.event.inputs.BUILD_TARGET }}-${{ github.run_id }}-${{ github.run_attempt }}
+        restore-keys: |
+          out-${{ runner.os }}-${{ github.event.inputs.MANIFEST_BRANCH }}-${{ steps.source.outputs.manifest }}-${{ github.event.inputs.DEVICE_NAME }}-${{ github.event.inputs.DEVICE_TREE_BRANCH }}-${{ github.event.inputs.BUILD_TARGET }}-
+
+    - name: Restore source timestamps
+      working-directory: ${{ steps.pwd.outputs.workspace-folder }}
+      run: |
+        repo forall -j"$(nproc)" -c '
+          timestamp=$(git log -1 --format=%ct)
+          git ls-files -z | xargs -0 -r touch -h -d "@${timestamp}"
+        '
 
     - name: Building recovery
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
@@ -178,11 +188,17 @@ jobs:
         mka "${{ github.event.inputs.BUILD_TARGET }}image" -j"$(nproc)"
         ccache --show-stats
 
+    - name: Save updated build output
+      uses: actions/cache/save@v4
+      with:
+        path: workspace/out
+        key: out-${{ runner.os }}-${{ github.event.inputs.MANIFEST_BRANCH }}-${{ steps.source.outputs.manifest }}-${{ github.event.inputs.DEVICE_NAME }}-${{ github.event.inputs.DEVICE_TREE_BRANCH }}-${{ github.event.inputs.BUILD_TARGET }}-${{ github.run_id }}-${{ github.run_attempt }}
+
     - name: Save updated ccache
       uses: actions/cache/save@v4
       with:
         path: ~/.cache/ccache
-        key: ccache-${{ runner.os }}-${{ github.event.inputs.MANIFEST_BRANCH }}-${{ github.event.inputs.DEVICE_NAME }}-${{ github.event.inputs.DEVICE_TREE_BRANCH }}-${{ github.run_id }}
+        key: ccache-${{ runner.os }}-${{ github.event.inputs.MANIFEST_BRANCH }}-${{ github.event.inputs.DEVICE_NAME }}-${{ github.event.inputs.DEVICE_TREE_BRANCH }}-${{ github.run_id }}-${{ github.run_attempt }}
 
     - name: Upload to Release
       uses: softprops/action-gh-release@v2
